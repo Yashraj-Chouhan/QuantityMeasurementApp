@@ -57,17 +57,25 @@ public class QuantityMeasurementApp {
 	return sum;
 	}
 	
+	//UC-7
+	public static QuantityLength demonstrateLengthAddition (QuantityLength length1, QuantityLength length2, QuantityLength.LengthUnit targetUnit) {
+		QuantityLength sum = length1.add(length2);
+		return demonstrateLengthConversion(sum,targetUnit);
+	}
+	
     public static void main(String[] args) {
     	demonstrateLengthComparison(1.0, QuantityLength.LengthUnit.FEET, 12.0, QuantityLength.LengthUnit.INCHES);
 		demonstrateLengthComparison(1.0, QuantityLength.LengthUnit.YARDS, 36.0, QuantityLength.LengthUnit.INCHES);
 		demonstrateLengthComparison(100.0, QuantityLength.LengthUnit.CENTIMETERS, 39.3701, QuantityLength.LengthUnit.INCHES);
 		demonstrateLengthComparison(3.0, QuantityLength.LengthUnit.FEET, 1.0, QuantityLength.LengthUnit.YARDS);
 		demonstrateLengthComparison(30.48, QuantityLength.LengthUnit.CENTIMETERS, 1.0, QuantityLength.LengthUnit.FEET);
+		System.out.println();
 		
 		demonstrateLengthConversion(1.0, QuantityLength.LengthUnit.FEET, QuantityLength.LengthUnit.INCHES);
 		demonstrateLengthConversion(3.0, QuantityLength.LengthUnit.YARDS, QuantityLength.LengthUnit.FEET);
 		demonstrateLengthConversion(30.48, QuantityLength.LengthUnit.CENTIMETERS, QuantityLength.LengthUnit.FEET);
 		demonstrateLengthConversion(36.0, QuantityLength.LengthUnit.INCHES, QuantityLength.LengthUnit.YARDS);
+		System.out.println();
 		
 		demonstrateLengthConversion(new QuantityLength(-1.0,QuantityLength.LengthUnit.FEET),QuantityLength.LengthUnit.INCHES);
 		
@@ -106,10 +114,60 @@ public class QuantityMeasurementApp {
 				new QuantityLength(0.0,LengthUnit.INCHES)
 				);
 		
+		System.out.println();
+		
 		demonstrateLengthAddition(
 				new QuantityLength(5.0,LengthUnit.FEET),
 				new QuantityLength(-2.0,LengthUnit.FEET)
 				);
 		
+		demonstrateLengthAddition(
+				new QuantityLength(1.0,LengthUnit.FEET),
+				new QuantityLength(12.0,LengthUnit.INCHES),
+				LengthUnit.FEET
+				);
+		
+		demonstrateLengthAddition(
+				new QuantityLength(1.0,LengthUnit.FEET),
+				new QuantityLength(12.0,LengthUnit.INCHES),
+				LengthUnit.INCHES
+				);
+		
+		demonstrateLengthAddition(
+				new QuantityLength(3.0,LengthUnit.FEET),
+				new QuantityLength(1.0,LengthUnit.YARDS),
+				LengthUnit.YARDS
+				);
+		
+		demonstrateLengthAddition(
+				new QuantityLength(1.0,LengthUnit.FEET),
+				new QuantityLength(12.0,LengthUnit.INCHES),
+				LengthUnit.YARDS
+				);
+		
+		demonstrateLengthAddition(
+				new QuantityLength(36.0,LengthUnit.INCHES),
+				new QuantityLength(1.0,LengthUnit.YARDS),
+				LengthUnit.FEET
+				);
+		
+		demonstrateLengthAddition(
+				new QuantityLength(2.54,LengthUnit.CENTIMETERS),
+				new QuantityLength(1.0,LengthUnit.INCHES),
+				LengthUnit.CENTIMETERS
+				);
+		
+		demonstrateLengthAddition(
+				new QuantityLength(5.0,LengthUnit.FEET),
+				new QuantityLength(0.0,LengthUnit.INCHES),
+				LengthUnit.YARDS
+				);
+		
+		demonstrateLengthAddition(
+				new QuantityLength(5.0,LengthUnit.FEET),
+				new QuantityLength(-2.0,LengthUnit.FEET),
+				LengthUnit.INCHES
+				);
+		System.out.println();
     }
 }

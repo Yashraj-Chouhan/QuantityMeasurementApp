@@ -399,4 +399,153 @@ public class QuantityMeasurementAppTest {
     	QuantityLength expected = new QuantityLength(0.003, QuantityLength.LengthUnit.FEET);
         assertEquals(expected, result);
     }
+    
+    @Test
+    public void testAddition_ExplicitTargetUnit_Feet() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+	        new QuantityLength(1.0, QuantityLength.LengthUnit.FEET),
+	        new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES),
+	        QuantityLength.LengthUnit.FEET
+        );
+        assertEquals(new QuantityLength(2.0, QuantityLength.LengthUnit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Inches() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(1.0, QuantityLength.LengthUnit.FEET),
+            new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES),
+            QuantityLength.LengthUnit.INCHES
+        );
+        assertEquals(new QuantityLength(24.0, QuantityLength.LengthUnit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Yards() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(1.0, QuantityLength.LengthUnit.FEET),
+            new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES),
+            QuantityLength.LengthUnit.YARDS
+        );
+        assertTrue(result.equals(new QuantityLength(0.666667, QuantityLength.LengthUnit.YARDS)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Centimeters() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(1.0, QuantityLength.LengthUnit.INCHES),
+            new QuantityLength(1.0, QuantityLength.LengthUnit.INCHES),
+            QuantityLength.LengthUnit.CENTIMETERS
+        );
+        assertTrue(result.equals(new QuantityLength(5.079998, QuantityLength.LengthUnit.CENTIMETERS)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_SameAsFirstOperand() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(2.0, QuantityLength.LengthUnit.YARDS),
+            new QuantityLength(3.0, QuantityLength.LengthUnit.FEET),
+            QuantityLength.LengthUnit.YARDS
+        );
+        assertEquals(new QuantityLength(3.0, QuantityLength.LengthUnit.YARDS), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_SameAsSecondOperand() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(2.0, QuantityLength.LengthUnit.YARDS),
+            new QuantityLength(3.0, QuantityLength.LengthUnit.FEET),
+            QuantityLength.LengthUnit.FEET
+        );
+        assertEquals(new QuantityLength(9.0, QuantityLength.LengthUnit.FEET), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_Commutativity() {
+    	QuantityLength a = new QuantityLength(1.0, QuantityLength.LengthUnit.FEET);
+    	QuantityLength b = new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES);
+    	QuantityLength result1 = QuantityMeasurementApp.demonstrateLengthAddition(a, b, QuantityLength.LengthUnit.YARDS);
+    	QuantityLength result2 = QuantityMeasurementApp.demonstrateLengthAddition(b, a, QuantityLength.LengthUnit.YARDS);
+        assertTrue(result1.equals(result2));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_WithZero() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(5.0, QuantityLength.LengthUnit.FEET),
+            new QuantityLength(0.0, QuantityLength.LengthUnit.INCHES),
+            QuantityLength.LengthUnit.YARDS
+        );
+        assertTrue(result.equals(new QuantityLength(1.666667, QuantityLength.LengthUnit.YARDS)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_NegativeValues() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(5.0, QuantityLength.LengthUnit.FEET),
+            new QuantityLength(-2.0, QuantityLength.LengthUnit.FEET),
+            QuantityLength.LengthUnit.INCHES
+        );
+        assertEquals(new QuantityLength(36.0, QuantityLength.LengthUnit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_NullTargetUnit() {
+        assertThrows(
+    		IllegalArgumentException.class, 
+    		() -> QuantityMeasurementApp.demonstrateLengthAddition(
+                new QuantityLength(1.0, QuantityLength.LengthUnit.FEET),
+                new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES),
+                null
+            )
+		);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_LargeToSmallScale() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(1000.0, QuantityLength.LengthUnit.FEET),
+            new QuantityLength(500.0, QuantityLength.LengthUnit.FEET),
+            QuantityLength.LengthUnit.INCHES
+        );
+        assertEquals(new QuantityLength(18000.0, QuantityLength.LengthUnit.INCHES), result);
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_SmallToLargeScale() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES),
+            new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES),
+            QuantityLength.LengthUnit.YARDS
+        );
+        assertTrue(result.equals(new QuantityLength(0.666667, QuantityLength.LengthUnit.YARDS)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_AllUnitCombinations() {
+    	QuantityLength result1 = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(1.0, QuantityLength.LengthUnit.FEET),
+            new QuantityLength(1.0, QuantityLength.LengthUnit.YARDS),
+            QuantityLength.LengthUnit.INCHES
+        );
+        assertTrue(new QuantityLength(48.0, QuantityLength.LengthUnit.INCHES).equals(result1));
+
+        QuantityLength result2 = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(2.54, QuantityLength.LengthUnit.CENTIMETERS),
+            new QuantityLength(1.0, QuantityLength.LengthUnit.INCHES),
+            QuantityLength.LengthUnit.FEET
+        );
+        assertTrue(result2.equals(new QuantityLength(0.166667, QuantityLength.LengthUnit.FEET)));
+    }
+
+    @Test
+    public void testAddition_ExplicitTargetUnit_PrecisionTolerance() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+            new QuantityLength(0.1, QuantityLength.LengthUnit.FEET),
+            new QuantityLength(0.2, QuantityLength.LengthUnit.FEET),
+            QuantityLength.LengthUnit.INCHES
+        );
+        assertTrue(result.equals(new QuantityLength(3.6, QuantityLength.LengthUnit.INCHES)));
+    }
 }
+

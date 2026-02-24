@@ -99,7 +99,7 @@ public class QuantityLength {
 	//UC 6 Core Method
 	public QuantityLength add(QuantityLength thatLength) {
 		if(thatLength == null) {
-			throw new IllegalArgumentException("Second opend null");
+			throw new IllegalArgumentException("Second oprend null");
 		}
 		
 		double base1 = this.convertToBaseUnit();
@@ -110,6 +110,25 @@ public class QuantityLength {
 		double resultThisUnit = convertFromBaseToTargetUnit(sumBase, this.unit);
 		
 		return new QuantityLength(resultThisUnit,this.unit);
+	}
+	
+	// UC-7 Method 
+	public QuantityLength add(QuantityLength thatLength, QuantityLength.LengthUnit targetUnit) {
+		if(thatLength == null || targetUnit == null) {
+			throw new IllegalArgumentException();
+		}
+		if(!Double.isFinite(this.value) || !Double.isFinite(thatLength.value)) {
+	    	throw new IllegalArgumentException("Values must be a finite number");
+	    }
+		
+		double base1 = this.convertToBaseUnit();
+		double base2 = thatLength.convertToBaseUnit();
+		
+		double sumBase = base1 + base2;
+		
+		double resultThisUnit = convertFromBaseToTargetUnit(sumBase, targetUnit);
+		
+		return new QuantityLength(resultThisUnit,targetUnit);
 	}
 	
 	// main method for standalone testing
@@ -142,5 +161,29 @@ public class QuantityLength {
 		System.out.println("Add 5 Feet + (-2 Feet) = " + new QuantityLength(5.0, LengthUnit.FEET).add(new QuantityLength(-2.0, LengthUnit.FEET)));
 		System.out.println("Add Large Values: " + new QuantityLength(1e6, LengthUnit.FEET).add(new QuantityLength(1e6, LengthUnit.FEET)));
 		System.out.println("Add Small Values: " + new QuantityLength(0.001, LengthUnit.FEET).add(new QuantityLength(0.002, LengthUnit.FEET)));
+	
+		QuantityLength result = new QuantityLength(1.0, LengthUnit.FEET).add(new QuantityLength(12.0, LengthUnit.INCHES), LengthUnit.FEET);
+	    System.out.println("Add (1.0 feet, 12.0 inches, feet) = " + result);
+
+	    result = new QuantityLength(1.0, LengthUnit.FEET).add(new QuantityLength(12.0, LengthUnit.INCHES), LengthUnit.INCHES);
+	    System.out.println("Add (1.0 feet, 12.0 inches, inches) = " + result);
+
+	    result = new QuantityLength(1.0, LengthUnit.FEET).add(new QuantityLength(12.0, LengthUnit.INCHES), LengthUnit.YARDS);
+	    System.out.println("Add (1.0 feet, 12.0 inches, yards) = " + result);
+
+	    result = new QuantityLength(1.0, LengthUnit.YARDS).add(new QuantityLength(3.0, LengthUnit.FEET), LengthUnit.YARDS);
+	    System.out.println("Add (1.0 yards, 3.0 feet, yards) = " + result);
+
+	    result = new QuantityLength(36.0, LengthUnit.INCHES).add(new QuantityLength(1.0, LengthUnit.YARDS), LengthUnit.FEET);
+	    System.out.println("Add (36.0 inches, 1.0 yards, feet) = " + result);
+
+	    result = new QuantityLength(2.54, LengthUnit.CENTIMETERS).add(new QuantityLength(1.0, LengthUnit.INCHES), LengthUnit.CENTIMETERS);
+	    System.out.println("Add (2.54 cm, 1.0 inch, cm) = " + result);
+
+	    result = new QuantityLength(5.0, LengthUnit.FEET).add(new QuantityLength(0.0, LengthUnit.INCHES), LengthUnit.YARDS);
+	    System.out.println("Add (5.0 feet, 0.0 inches, yards) = " + result);
+
+	    result = new QuantityLength(5.0, LengthUnit.FEET).add(new QuantityLength(-2.0, LengthUnit.FEET), LengthUnit.INCHES);
+	    System.out.println("Add (5.0 feet, -2.0 feet, inches) = " + result);
 	}
 }	
