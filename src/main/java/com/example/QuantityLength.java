@@ -4,10 +4,14 @@ public class QuantityLength {
 	private final double value;
 	private final LengthUnit unit;
 	
+	private static final double EPSILON = 0.0001;
+	
 	// Enum to represent supported units of length
 	public enum LengthUnit {
 		FEET(12.0), // Conversion Factor: 1 foot = 12 inches
-		INCHES(1.0);// Conversion Factor: 1 Inch = 1 Inch(base unit)
+		INCHES(1.0),// Conversion Factor: 1 Inch = 1 Inch(base unit)
+		YARDS(36.0), // Conversion Factor: 1 yard = 36 inches
+		CENTIMETERS(0.393701); // Conversion Factor 1 cm = 0.393701in
 		
 		private final double conversionFactor;
 		
@@ -40,7 +44,7 @@ public class QuantityLength {
 	
 
 	public boolean compare(QuantityLength obj) {
-		return Double.compare(this.convertToBaseUnit(),obj.convertToBaseUnit())==0;
+		return Math.abs(this.convertToBaseUnit() - obj.convertToBaseUnit()) < EPSILON;
 	}
 	
 	@Override
@@ -76,6 +80,16 @@ public class QuantityLength {
 		QuantityLength length1 = new QuantityLength(1.0,LengthUnit.FEET);
 		QuantityLength length2 = new QuantityLength(12.0,LengthUnit.INCHES);
 		System.out.println("Are lengths equal? "+ length1.equals(length2));
+		
+		QuantityLength length3 = new QuantityLength(1.0,LengthUnit.YARDS);
+		QuantityLength length4 = new QuantityLength(36.0,LengthUnit.INCHES);
+		System.out.println("Are lengths equal? "+ length3.equals(length4));
+		
+		QuantityLength length5 = new QuantityLength(100.0,LengthUnit.CENTIMETERS);
+		QuantityLength length6 = new QuantityLength(39.3701,LengthUnit.INCHES);
+		System.out.println("Are lengths equal? "+ length5.equals(length6));
+		
+		
 	}
 	
 }
