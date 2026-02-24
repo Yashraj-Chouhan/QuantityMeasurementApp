@@ -76,6 +76,24 @@ public class QuantityLength {
 	 return Double.hashCode(convertToBaseUnit());
 	}
 	
+	@Override 
+	public String toString() {
+		return String.format("%.2f %s",value, unit);
+	}
+	
+	// convert this length to the specified target unit
+	public QuantityLength convertTo(LengthUnit targetUnit) {
+		if(targetUnit == null) {
+			throw new IllegalArgumentException("Target unit cannot be null");
+		}
+		double baseValue = this.convertToBaseUnit();
+		double convertedValue = baseValue / targetUnit.getConversionFactor();
+	
+		convertedValue = Math.round(convertedValue * 100.0) /100.0 ;
+		return new QuantityLength(convertedValue,targetUnit);
+	}
+	
+	// main method for standalone testing
 	public static void main(String []args) {
 		QuantityLength length1 = new QuantityLength(1.0,LengthUnit.FEET);
 		QuantityLength length2 = new QuantityLength(12.0,LengthUnit.INCHES);
@@ -89,7 +107,13 @@ public class QuantityLength {
 		QuantityLength length6 = new QuantityLength(39.3701,LengthUnit.INCHES);
 		System.out.println("Are lengths equal? "+ length5.equals(length6));
 		
-		
+		System.out.println("Convert 3 Feet to Inches: " + length1.convertTo(LengthUnit.INCHES));
+		System.out.println("Convert 2 Yards to Inches: " + length3.convertTo(LengthUnit.INCHES));
+		System.out.println("Convert 30.48 cm to Feet: " + new QuantityLength(30.48, LengthUnit.CENTIMETERS).convertTo(LengthUnit.FEET));
+		System.out.println("Convert 72 Inches to Yards: " + new QuantityLength(72.0, LengthUnit.INCHES).convertTo(LengthUnit.YARDS));
+		System.out.println("Convert 0 Feet to Inches: " + new QuantityLength(0.0, LengthUnit.FEET).convertTo(LengthUnit.INCHES));
+		System.out.println("Convert -1 Foot to Inches: " + new QuantityLength(-1.0, LengthUnit.FEET).convertTo(LengthUnit.INCHES));
+
 	}
 	
 }
