@@ -1,0 +1,11 @@
+# --- Build Output ---
+target/
+
+# --- STS / Eclipse Metadata ---
+.settings/
+.classpath
+.project
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
