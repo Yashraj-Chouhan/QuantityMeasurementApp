@@ -13,21 +13,21 @@ import com.example.QuantityLength.LengthUnit;
 public class QuantityMeasurementAppTest {
 
 	@Test
-	void testEquality_YardToYard_SameValue() {
+	public void testEquality_YardToYard_SameValue() {
 		QuantityLength yard1 = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength yard2 = new QuantityLength(1.0,LengthUnit.YARDS);
 		assertTrue(yard1.equals(yard2));
 	}
 	
 	@Test
-	void testEquality_YardToYard_DifferentValue() {
+	public void testEquality_YardToYard_DifferentValue() {
 		QuantityLength yard1 = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength yard2 = new QuantityLength(2.0,LengthUnit.YARDS);
 		assertFalse(yard1.equals(yard2));
 	}
 	
 	@Test
-	void testEquality_YardToFeet_EquivalentValue() {
+	public void testEquality_YardToFeet_EquivalentValue() {
 		QuantityLength yard = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength feet = new QuantityLength(3.0,LengthUnit.FEET);
 		assertEquals(yard,feet);
@@ -35,7 +35,7 @@ public class QuantityMeasurementAppTest {
 	}
 	
 	@Test
-	void testEquality_FeetToYard_EquivalentValue() {
+	public void testEquality_FeetToYard_EquivalentValue() {
 		QuantityLength yard = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength feet = new QuantityLength(3.0,LengthUnit.FEET);
 		assertEquals(feet,yard);
@@ -43,7 +43,7 @@ public class QuantityMeasurementAppTest {
 	}
 	
 	@Test 
-	void testEquality_YardToInches_EquivalentValue() {
+	public void testEquality_YardToInches_EquivalentValue() {
 		QuantityLength yard = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength inches = new QuantityLength(36.0,LengthUnit.INCHES);
 		assertEquals(yard,inches);
@@ -51,35 +51,35 @@ public class QuantityMeasurementAppTest {
 	}
 	
 	@Test
-	void testEquality_InchesToYard_EquivalentValue(){
+	public void testEquality_InchesToYard_EquivalentValue(){
 		QuantityLength yard = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength inches = new QuantityLength(36.0,LengthUnit.INCHES);
 		assertEquals(inches,yard);
 	}
 
 	@Test
-	void testEquality_YardToFeet_NonEquivalentValue() {
+	public void testEquality_YardToFeet_NonEquivalentValue() {
 		QuantityLength yard = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength feet = new QuantityLength(2.0,LengthUnit.FEET);
 		assertNotEquals(yard,feet);	
 	}
 	
 	@Test
-	void testEquality_centimetersToInches_EquivalentValue() {
+	public void testEquality_centimetersToInches_EquivalentValue() {
 		QuantityLength centimeters = new QuantityLength(1.0,LengthUnit.CENTIMETERS);
 		QuantityLength inches = new QuantityLength(0.393701,LengthUnit.INCHES);
 		assertEquals(centimeters,inches);	
 	}
 	
 	@Test
-	void testEquality_centimetersToFeet_NonEquivalentValue() {
+	public void testEquality_centimetersToFeet_NonEquivalentValue() {
 		QuantityLength centimeters = new QuantityLength(1.0,LengthUnit.CENTIMETERS);
 		QuantityLength inches = new QuantityLength(1.0,LengthUnit.FEET);
 		assertNotEquals(centimeters,inches);
 	}
 	
 	@Test
-	void testEquality_MultiUnit_TransitiveProperty() {
+	public void testEquality_MultiUnit_TransitiveProperty() {
 		QuantityLength yard = new QuantityLength(1.0,LengthUnit.YARDS);
 		QuantityLength feet = new QuantityLength(3.0, LengthUnit.FEET);
 		QuantityLength inches= new QuantityLength(36.0,LengthUnit.INCHES);
@@ -89,44 +89,44 @@ public class QuantityMeasurementAppTest {
 	}
 	
 	@Test
-	void testEquality_YardWithNullUnit() {
+	public void testEquality_YardWithNullUnit() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new QuantityLength(1.0,null);
 		});
 	}
 	
 	@Test
-	void testEquality_YardSameReference() {
+	public void testEquality_YardSameReference() {
 		QuantityLength yard = new QuantityLength(2.0,LengthUnit.YARDS);
 		assertTrue(yard.equals(yard));
 	}
 	
 	@Test
-	void testEquality_YardNullComparison() {
+	public void testEquality_YardNullComparison() {
 		QuantityLength yard = new QuantityLength(1.0,LengthUnit.YARDS);
 		assertFalse(yard.equals(null));
 	}
 	
 	@Test
-	void testEquality_CentimetersWithNullUnit() {
+	public void testEquality_CentimetersWithNullUnit() {
 		assertThrows(IllegalArgumentException.class, 
 				() -> { new QuantityLength(2.0,null);});
 	}
 	
 	@Test
-	void testEquality_CentimetersSameReference() {
+	public void testEquality_CentimetersSameReference() {
 		QuantityLength centimeter = new QuantityLength(2.0,LengthUnit.CENTIMETERS);
 		assertTrue(centimeter.equals(centimeter));
 	}
 	
 	@Test
-	void testEquality_CentimeterdNullComparison() {
+	public void testEquality_CentimeterdNullComparison() {
 		QuantityLength centimeter = new QuantityLength(1.0,LengthUnit.CENTIMETERS);
 		assertFalse(centimeter.equals(null));
 	}
 	
 	@Test
-	void testEquality_AllUnits_ComplexScenario() {
+	public void testEquality_AllUnits_ComplexScenario() {
 		QuantityLength yard = new QuantityLength(2.0,LengthUnit.YARDS);
 		QuantityLength feet = new QuantityLength(6.0, LengthUnit.FEET);
 		QuantityLength inches= new QuantityLength(72.0,LengthUnit.INCHES);
@@ -136,21 +136,21 @@ public class QuantityMeasurementAppTest {
 	}
 	
 	@Test
-	void testEquality_CentimetersToCentimeters_SameValue() {
+	public void testEquality_CentimetersToCentimeters_SameValue() {
 		QuantityLength cm2a = new QuantityLength(2.0, QuantityLength.LengthUnit.CENTIMETERS);
 		QuantityLength cm2b = new QuantityLength(2.0, QuantityLength.LengthUnit.CENTIMETERS);
 		assertEquals(cm2a, cm2b);
 	}
 
 	@Test
-	 void testEquality_CentimetersToCentimeters_DifferentValue() {
+	public void testEquality_CentimetersToCentimeters_DifferentValue() {
 		QuantityLength cm2 = new QuantityLength(2.0, QuantityLength.LengthUnit.CENTIMETERS);
 		QuantityLength cm3 = new QuantityLength(3.0, QuantityLength.LengthUnit.CENTIMETERS);
 		assertNotEquals(cm2, cm3);
 	}
 
 	@Test
-	void testEquality_InchesToCentimeters_EquivalentValue() {
+	public void testEquality_InchesToCentimeters_EquivalentValue() {
 		QuantityLength inchValue = new QuantityLength(0.393701, QuantityLength.LengthUnit.INCHES);
 		QuantityLength cm1 = new QuantityLength(1.0, QuantityLength.LengthUnit.CENTIMETERS);
 		assertEquals(inchValue, cm1);
@@ -158,31 +158,31 @@ public class QuantityMeasurementAppTest {
 
 
 	@Test
-	void testEquality_DifferentClass() {
+	public void testEquality_DifferentClass() {
 		QuantityLength yard = new QuantityLength(2.0, QuantityLength.LengthUnit.YARDS);
 		assertFalse(yard.equals("2.0"));
 	}
 	
 	@Test
-	void testEquality_NaN() {
+	public void testEquality_NaN() {
 		assertThrows(IllegalArgumentException.class, () -> new QuantityLength(Double.NaN, QuantityLength.LengthUnit.FEET));
 	}
 
 	@Test
-	void testEquality_Infinity() {
+	public void testEquality_Infinity() {
 		assertThrows(IllegalArgumentException.class,
 				() -> new QuantityLength(Double.POSITIVE_INFINITY, QuantityLength.LengthUnit.INCHES));
 	}
 	
 	@Test
-	void testEquality_DemonstrateLengthComparisonMethod() {
+	public void testEquality_DemonstrateLengthComparisonMethod() {
 		boolean result = QuantityMeasurementApp.demonstrateLengthComparison(1.0, QuantityLength.LengthUnit.YARDS, 36.0, QuantityLength.LengthUnit.INCHES);
 		assertEquals(result,true);
 	}
 	
 	// UC5 Test Cases
 	@Test
-	void testConversion_FeetToInches() {
+	public void testConversion_FeetToInches() {
 		QuantityLength result = QuantityMeasurementApp.demonstrateLengthConversion(1.0, QuantityLength.LengthUnit.FEET, QuantityLength.LengthUnit.INCHES);
 		QuantityLength expected = new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES);
         assertEquals(expected, result);
@@ -276,6 +276,127 @@ public class QuantityMeasurementAppTest {
     public void testConversion_SameUnit() {
     	QuantityLength result = QuantityMeasurementApp.demonstrateLengthConversion(5.0, QuantityLength.LengthUnit.FEET, QuantityLength.LengthUnit.FEET);
     	QuantityLength expected = new QuantityLength(5.0, QuantityLength.LengthUnit.FEET);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_SameUnit_FeetPlusFeet() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(1.0,QuantityLength.LengthUnit.FEET),	
+    			new QuantityLength(2.0,QuantityLength.LengthUnit.FEET)
+    	);	
+    	QuantityLength expected = new QuantityLength(3.0, QuantityLength.LengthUnit.FEET);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_SameUnit_InchPlusInch() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(6.0,QuantityLength.LengthUnit.INCHES),	
+    			new QuantityLength(6.0,QuantityLength.LengthUnit.INCHES)
+    	);	
+    	QuantityLength expected = new QuantityLength(12.0, QuantityLength.LengthUnit.INCHES);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_CrossUnit_FeetPlusInches() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(1.0,QuantityLength.LengthUnit.FEET),	
+    			new QuantityLength(12.0,QuantityLength.LengthUnit.INCHES)
+    	);	
+    	QuantityLength expected = new QuantityLength(2.0, QuantityLength.LengthUnit.FEET);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_CrossUnit_InchPlusFeet() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(12.0,QuantityLength.LengthUnit.INCHES),
+    			new QuantityLength(1.0,QuantityLength.LengthUnit.FEET)
+    	);	
+    	QuantityLength expected = new QuantityLength(24.0, QuantityLength.LengthUnit.INCHES);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_CrossUnit_YardPlusFeet() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(1.0,QuantityLength.LengthUnit.YARDS),
+    			new QuantityLength(3.0,QuantityLength.LengthUnit.FEET)
+    	);	
+    	QuantityLength expected = new QuantityLength(2.0, QuantityLength.LengthUnit.YARDS);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_CrossUnit_CentimeterPlusInch() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(2.54,QuantityLength.LengthUnit.CENTIMETERS),
+    			new QuantityLength(1.0,QuantityLength.LengthUnit.INCHES)
+    	);	
+    	QuantityLength expected = new QuantityLength(5.08, QuantityLength.LengthUnit.CENTIMETERS);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_Commutativity() {
+    	QuantityLength result1 = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(1.0,QuantityLength.LengthUnit.FEET),	
+    			new QuantityLength(12.0,QuantityLength.LengthUnit.INCHES)
+    	);	
+    	QuantityLength result2 = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(12.0,QuantityLength.LengthUnit.INCHES),
+    			new QuantityLength(1.0,QuantityLength.LengthUnit.FEET)
+    	);
+        assertEquals(result1, result2);
+    }
+    
+    @Test
+    public void testAddition_WithZero() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(5.0,QuantityLength.LengthUnit.FEET),	
+    			new QuantityLength(0.0,QuantityLength.LengthUnit.INCHES)
+    	);	
+    	QuantityLength expected = new QuantityLength(5.0, QuantityLength.LengthUnit.FEET);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_NegativeValues() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(5.0,QuantityLength.LengthUnit.FEET),	
+    			new QuantityLength(-2.0,QuantityLength.LengthUnit.FEET)
+    	);	
+    	QuantityLength expected = new QuantityLength(3.0, QuantityLength.LengthUnit.FEET);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_NullSecondOperand() {
+    	assertThrows(
+    			IllegalArgumentException.class, 
+    			() -> {	QuantityMeasurementApp.demonstrateLengthAddition(new QuantityLength(1.0,QuantityLength.LengthUnit.FEET),null);}
+    			);
+    }
+    
+    @Test
+    public void testAddition_LargeValues() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(1e6,QuantityLength.LengthUnit.FEET),	
+    			new QuantityLength(1e6,QuantityLength.LengthUnit.FEET)
+    	);	
+    	QuantityLength expected = new QuantityLength(2e6, QuantityLength.LengthUnit.FEET);
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testAddition_SmallValues() {
+    	QuantityLength result = QuantityMeasurementApp.demonstrateLengthAddition(
+    			new QuantityLength(0.001,QuantityLength.LengthUnit.FEET),	
+    			new QuantityLength(0.002,QuantityLength.LengthUnit.FEET)
+    	);	
+    	QuantityLength expected = new QuantityLength(0.003, QuantityLength.LengthUnit.FEET);
         assertEquals(expected, result);
     }
 }
