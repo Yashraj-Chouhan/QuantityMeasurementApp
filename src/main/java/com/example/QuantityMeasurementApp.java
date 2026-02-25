@@ -2,7 +2,7 @@ package com.example;
 
 import java.util.Scanner;
 
-import com.example.QuantityLength.LengthUnit;
+import com.example.LengthUnit;
 
 public class QuantityMeasurementApp {
 	
@@ -12,7 +12,7 @@ public class QuantityMeasurementApp {
 	}
 		
 	// Static method to demonstrate extended unit comparisons
-	public static boolean demonstrateLengthComparison(double value1, QuantityLength.LengthUnit unit1, double value2 , QuantityLength.LengthUnit unit2) {
+	public static boolean demonstrateLengthComparison(double value1,  LengthUnit unit1, double value2 ,  LengthUnit unit2) {
 		QuantityLength length1 = new QuantityLength(value1,unit1);
 		QuantityLength length2 = new QuantityLength(value2,unit2);
 		System.out.println("Are lengths equals? " + demonstrateLengthEquality(length1,length2));
@@ -21,7 +21,7 @@ public class QuantityMeasurementApp {
 	}
 	
 
-	public static double convert(double value, QuantityLength.LengthUnit fromUnit, QuantityLength.LengthUnit toUnit) {
+	public static double convert(double value,  LengthUnit fromUnit,  LengthUnit toUnit) {
 		
 		if(fromUnit == null || toUnit == null) 
 			throw new IllegalArgumentException("Units cannot be null");
@@ -37,14 +37,14 @@ public class QuantityMeasurementApp {
 	}
 	
 	//Overloaded conversion method (Using QuantityLength object)
-	public static QuantityLength demonstrateLengthConversion(double value, QuantityLength.LengthUnit fromUnit, QuantityLength.LengthUnit toUnit) {
+	public static QuantityLength demonstrateLengthConversion(double value,  LengthUnit fromUnit,  LengthUnit toUnit) {
 		QuantityLength source  =  new QuantityLength(value,fromUnit);
 		QuantityLength convert = source.convertTo(toUnit);
 		System.out.println(source + " -> "+ convert);
 		return convert;
 	}
 	
-	public static QuantityLength demonstrateLengthConversion(QuantityLength length, QuantityLength.LengthUnit targetUnit) {
+	public static QuantityLength demonstrateLengthConversion(QuantityLength length,  LengthUnit targetUnit) {
 		QuantityLength convert = length.convertTo(targetUnit);
 		System.out.println(length + " -> "+ convert);
 		return convert;
@@ -58,26 +58,26 @@ public class QuantityMeasurementApp {
 	}
 	
 	//UC-7
-	public static QuantityLength demonstrateLengthAddition (QuantityLength length1, QuantityLength length2, QuantityLength.LengthUnit targetUnit) {
+	public static QuantityLength demonstrateLengthAddition (QuantityLength length1, QuantityLength length2,  LengthUnit targetUnit) {
 		QuantityLength sum = length1.add(length2);
 		return demonstrateLengthConversion(sum,targetUnit);
 	}
 	
     public static void main(String[] args) {
-    	demonstrateLengthComparison(1.0, QuantityLength.LengthUnit.FEET, 12.0, QuantityLength.LengthUnit.INCHES);
-		demonstrateLengthComparison(1.0, QuantityLength.LengthUnit.YARDS, 36.0, QuantityLength.LengthUnit.INCHES);
-		demonstrateLengthComparison(100.0, QuantityLength.LengthUnit.CENTIMETERS, 39.3701, QuantityLength.LengthUnit.INCHES);
-		demonstrateLengthComparison(3.0, QuantityLength.LengthUnit.FEET, 1.0, QuantityLength.LengthUnit.YARDS);
-		demonstrateLengthComparison(30.48, QuantityLength.LengthUnit.CENTIMETERS, 1.0, QuantityLength.LengthUnit.FEET);
+    	demonstrateLengthComparison(1.0,  LengthUnit.FEET, 12.0,  LengthUnit.INCHES);
+		demonstrateLengthComparison(1.0,  LengthUnit.YARDS, 36.0,  LengthUnit.INCHES);
+		demonstrateLengthComparison(100.0,  LengthUnit.CENTIMETERS, 39.3701,  LengthUnit.INCHES);
+		demonstrateLengthComparison(3.0,  LengthUnit.FEET, 1.0,  LengthUnit.YARDS);
+		demonstrateLengthComparison(30.48,  LengthUnit.CENTIMETERS, 1.0,  LengthUnit.FEET);
 		System.out.println();
 		
-		demonstrateLengthConversion(1.0, QuantityLength.LengthUnit.FEET, QuantityLength.LengthUnit.INCHES);
-		demonstrateLengthConversion(3.0, QuantityLength.LengthUnit.YARDS, QuantityLength.LengthUnit.FEET);
-		demonstrateLengthConversion(30.48, QuantityLength.LengthUnit.CENTIMETERS, QuantityLength.LengthUnit.FEET);
-		demonstrateLengthConversion(36.0, QuantityLength.LengthUnit.INCHES, QuantityLength.LengthUnit.YARDS);
+		demonstrateLengthConversion(1.0,  LengthUnit.FEET,  LengthUnit.INCHES);
+		demonstrateLengthConversion(3.0,  LengthUnit.YARDS,  LengthUnit.FEET);
+		demonstrateLengthConversion(30.48,  LengthUnit.CENTIMETERS,  LengthUnit.FEET);
+		demonstrateLengthConversion(36.0,  LengthUnit.INCHES,  LengthUnit.YARDS);
 		System.out.println();
 		
-		demonstrateLengthConversion(new QuantityLength(-1.0,QuantityLength.LengthUnit.FEET),QuantityLength.LengthUnit.INCHES);
+		demonstrateLengthConversion(new QuantityLength(-1.0, LengthUnit.FEET), LengthUnit.INCHES);
 		
 		demonstrateLengthAddition(
 				new QuantityLength(1.0,LengthUnit.FEET),
