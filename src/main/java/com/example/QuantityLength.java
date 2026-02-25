@@ -4,6 +4,7 @@ public class QuantityLength<U extends IMeasurable> {
 	private final double value;
 	private final U unit;
 	private static final double EPSILON = 1e-6;
+	private static final double ROUND_SCALE = 1e6;
 	
 	// Constructor to initialize length value and unit
 	public QuantityLength(double value, U unit) {
@@ -87,6 +88,68 @@ public class QuantityLength<U extends IMeasurable> {
 		return new QuantityLength<>(result,targetUnit);
 	}
 
+	private void validateOperand(QuantityLength<U> other) {
+		if (other == null) {
+			throw new IllegalArgumentException("Other quantity must not be null");
+		}
+		if (this.unit == null || other.unit == null) {
+			throw new IllegalArgumentException("Unit must not be null");
+		}
+		if (Double.isNaN(this.value) || Double.isInfinite(this.value) || 
+			Double.isNaN(other.value) || Double.isInfinite(other.value)) {
+			throw new IllegalArgumentException("Values must be finite numbers");
+		}
+		if (this.unit.getClass() != other.unit.getClass()) {
+			throw new IllegalArgumentException("Cannot operate across different measurement categories");
+		}
+	}
+
+	public QuantityLength<U> subtract(QuantityLength<U> other) {
+		validateOperand(other);
+		
+		double baseThis = this.unit.convertToBaseUnit(this.value);
+		double baseOther = other.unit.convertToBaseUnit(other.value);
+		double baseResult = baseThis - baseOther;
+		double resultInThisUnit = this.unit.convertFromBaseUnit(baseResult);
+		
+		double rounded = Math.round(resultInThisUnit * ROUND_SCALE) / ROUND_SCALE;
+		return new QuantityLength<>(rounded, this.unit);
+	}
+
+	public QuantityLength<U> subtract(QuantityLength<U> other, U targetUnit) {
+		validateOperand(other);
+		
+		if (targetUnit == null) {
+			throw new IllegalArgumentException("Target unit cannot be null");
+		}
+		
+		if (targetUnit.getClass() != this.unit.getClass()) {
+			throw new IllegalArgumentException("Target unit must belong to same measurement category");
+		}
+		
+		double baseThis = this.unit.convertToBaseUnit(this.value);
+		double baseOther = other.unit.convertToBaseUnit(other.value);
+		double baseResult = baseThis - baseOther;
+		double resultInTarget = targetUnit.convertFromBaseUnit(baseResult);
+		
+		double rounded = Math.round(resultInTarget * ROUND_SCALE) / ROUND_SCALE;
+		return new QuantityLength<>(rounded, targetUnit);
+	}
+
+	public double divide(QuantityLength<U> other) {
+		validateOperand(other);
+		
+		double baseThis = this.unit.convertToBaseUnit(this.value);
+		double baseOther = other.unit.convertToBaseUnit(other.value);
+		
+		if (baseOther == 0.0) {
+			throw new ArithmeticException("Division by zero QuantityLength");
+		}
+		
+		return baseThis / baseOther;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		Long normalized = Math.round(unit.convertToBaseUnit(value)  / EPSILON);

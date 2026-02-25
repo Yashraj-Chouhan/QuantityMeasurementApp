@@ -27,7 +27,36 @@ public class QuantityMeasurementApp {
 		return sum;
 	}
 	
+	public static <U extends IMeasurable> QuantityLength<U> demonstrateSubtraction(QuantityLength<U> a, QuantityLength<U> b) {
+	    QuantityLength<U> result = a.subtract(b);
+	    System.out.println(a + " - " + b + " = " + result);
+	    return result;
+	}
+
+	public static <U extends IMeasurable> QuantityLength<U> demonstrateSubtraction(QuantityLength<U> a, QuantityLength<U> b, U targetUnit) {
+	    QuantityLength<U> result = a.subtract(b, targetUnit);
+	    System.out.println(a + " - " + b + " in " + targetUnit.getUnitName() + " = " + result);
+	    return result;
+	}
+
+	public static <U extends IMeasurable> double demonstrateDivision(QuantityLength<U> a, QuantityLength<U> b) {
+	    double result = a.divide(b);
+	    System.out.println(a + " / " + b + " = " + result);
+	    return result;
+	}
+	
     public static void main(String[] args) {
+    	demonstrateSubtraction(new QuantityLength<>(10.0, LengthUnit.FEET), new QuantityLength<>(6.0, LengthUnit.INCHES));
+		demonstrateSubtraction(new QuantityLength<>(10.0, WeightUnit.KILOGRAM), new QuantityLength<>(5000.0, WeightUnit.GRAM));
+		demonstrateSubtraction(new QuantityLength<>(5.0, VolumeUnit.LITRE), new QuantityLength<>(500.0, VolumeUnit.MILLILITRE));
+
+		demonstrateSubtraction(new QuantityLength<>(10.0, LengthUnit.FEET), new QuantityLength<>(6.0, LengthUnit.INCHES), LengthUnit.INCHES);
+
+		demonstrateDivision(new QuantityLength<>(10.0, LengthUnit.FEET), new QuantityLength<>(2.0, LengthUnit.FEET));
+		demonstrateDivision(new QuantityLength<>(12.0, LengthUnit.INCHES), new QuantityLength<>(1.0, LengthUnit.FEET));
+		demonstrateDivision(new QuantityLength<>(10.0, WeightUnit.KILOGRAM), new QuantityLength<>(5.0, WeightUnit.KILOGRAM));
+		demonstrateDivision(new QuantityLength<>(5.0, VolumeUnit.LITRE), new QuantityLength<>(10.0, VolumeUnit.LITRE));
+    	
     	demonstrateEquality(new QuantityLength<>(1.0, VolumeUnit.LITRE), new QuantityLength<>(1000.0, VolumeUnit.MILLILITRE));
         demonstrateEquality(new QuantityLength<>(3.78541, VolumeUnit.LITRE), new QuantityLength<>(1.0, VolumeUnit.GALLON));
         demonstrateConversion(new QuantityLength<>(1.0, VolumeUnit.LITRE), VolumeUnit.MILLILITRE);
