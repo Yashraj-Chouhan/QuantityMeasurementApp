@@ -1,9 +1,5 @@
 package com.example;
 
-import java.util.Scanner;
-
-import com.example.LengthUnit;
-
 public class QuantityMeasurementApp {
 	
 	public static <U extends IMeasurable> boolean demonstrateEquality(QuantityLength<U> q1, QuantityLength<U> q2) {
@@ -32,6 +28,21 @@ public class QuantityMeasurementApp {
 	}
 	
     public static void main(String[] args) {
+    	demonstrateEquality(new QuantityLength<>(1.0, VolumeUnit.LITRE), new QuantityLength<>(1000.0, VolumeUnit.MILLILITRE));
+        demonstrateEquality(new QuantityLength<>(3.78541, VolumeUnit.LITRE), new QuantityLength<>(1.0, VolumeUnit.GALLON));
+        demonstrateConversion(new QuantityLength<>(1.0, VolumeUnit.LITRE), VolumeUnit.MILLILITRE);
+        demonstrateConversion(new QuantityLength<>(1.0, VolumeUnit.GALLON), VolumeUnit.LITRE);
+        demonstrateConversion(new QuantityLength<>(1000.0, VolumeUnit.MILLILITRE), VolumeUnit.GALLON);
+
+        demonstrateAddition(new QuantityLength<>(1.0, VolumeUnit.LITRE), new QuantityLength<>(1000.0, VolumeUnit.MILLILITRE));
+        demonstrateAddition(new QuantityLength<>(1.0, VolumeUnit.LITRE), new QuantityLength<>(1.0, VolumeUnit.GALLON), VolumeUnit.MILLILITRE);
+        demonstrateAddition(new QuantityLength<>(1000.0, VolumeUnit.MILLILITRE), new QuantityLength<>(1.0, VolumeUnit.GALLON), VolumeUnit.GALLON);
+
+        System.out.println("Volume vs Length equality: " + new QuantityLength<>(1.0, VolumeUnit.LITRE).equals(new QuantityLength<>(1.0, LengthUnit.FEET)));
+        System.out.println("Volume vs Weight equality: " + new QuantityLength<>(1.0, VolumeUnit.LITRE).equals(new QuantityLength<>(1.0, WeightUnit.KILOGRAM)));
+        System.out.println("Weight vs Length equality: " + new QuantityLength<>(1.0, WeightUnit.KILOGRAM).equals(new QuantityLength<>(1.0, LengthUnit.FEET)));
+
+    	
     	demonstrateEquality(new QuantityLength<>(1.0, WeightUnit.KILOGRAM), new QuantityLength<>(1000.0, WeightUnit.GRAM));
 		demonstrateEquality(new QuantityLength<>(2.204624, WeightUnit.POUND), new QuantityLength<>(1.0, WeightUnit.KILOGRAM));
 		demonstrateEquality(new QuantityLength<>(453.592, WeightUnit.GRAM), new QuantityLength<>(1.0, WeightUnit.POUND));
