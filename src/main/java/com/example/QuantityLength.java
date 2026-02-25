@@ -4,26 +4,7 @@ public class QuantityLength {
 	private final double value;
 	private final LengthUnit unit;
 	
-	private static final double EPSILON = 0.0001;
-	
-	// Enum to represent supported units of length
-	public enum LengthUnit {
-		FEET(12.0), // Conversion Factor: 1 foot = 12 inches
-		INCHES(1.0),// Conversion Factor: 1 Inch = 1 Inch(base unit)
-		YARDS(36.0), // Conversion Factor: 1 yard = 36 inches
-		CENTIMETERS(0.393701); // Conversion Factor 1 cm = 0.393701in
-		
-		private final double conversionFactor;
-		
-		LengthUnit(double conversionFactor){
-			this.conversionFactor = conversionFactor;
-		}
-		
-		public double getConversionFactor() {
-			return conversionFactor;
-		}
-	}
-
+	private static final double EPSILON = 1e-6;
 	
 	// Constructor to initialize length value and unit
 	public QuantityLength(double value, LengthUnit unit) {
@@ -39,9 +20,15 @@ public class QuantityLength {
 	
 	//Convert the length value to the base unit(inches)
 	private double convertToBaseUnit(){
-		return value * unit.getConversionFactor();
+		return unit.convertToBaseUnit(value);
 	}
 	
+	private double convertFromBaseToTargetUnit(double lengthInInches, LengthUnit targetUnit) {
+		if (targetUnit == null) {
+			throw new IllegalArgumentException("Target unit cannot be null");
+		}
+		return targetUnit.convertFromBaseUnit(lengthInInches);
+	}
 
 	public boolean compare(QuantityLength obj) {
 		return Math.abs(this.convertToBaseUnit() - obj.convertToBaseUnit()) < EPSILON;
@@ -73,7 +60,9 @@ public class QuantityLength {
 	
 	@Override
 	public int hashCode() {
-	 return Double.hashCode(convertToBaseUnit());
+		double normalized = Math.round(convertToBaseUnit() * 10000.0) / 10000.0;
+
+		return Double.hashCode(normalized);
 	}
 	
 	@Override 
@@ -88,13 +77,7 @@ public class QuantityLength {
 		}
 		double baseValue = this.convertToBaseUnit();
 		double convertedValue = convertFromBaseToTargetUnit(baseValue,targetUnit);
-	
-		convertedValue = Math.round(convertedValue * 100.0) /100.0 ;
 		return new QuantityLength(convertedValue,targetUnit);
-	}
-	
-	private double convertFromBaseToTargetUnit(double baseValue, LengthUnit targetUnit) {
-		return baseValue / targetUnit.getConversionFactor();
 	}
 	//UC 6 Core Method
 	public QuantityLength add(QuantityLength thatLength) {
@@ -108,12 +91,11 @@ public class QuantityLength {
 		double sumBase = base1 + base2;
 		
 		double resultThisUnit = convertFromBaseToTargetUnit(sumBase, this.unit);
-		
 		return new QuantityLength(resultThisUnit,this.unit);
 	}
 	
 	// UC-7 Method 
-	public QuantityLength add(QuantityLength thatLength, QuantityLength.LengthUnit targetUnit) {
+	public QuantityLength add(QuantityLength thatLength, LengthUnit targetUnit) {
 		if(thatLength == null || targetUnit == null) {
 			throw new IllegalArgumentException();
 		}
@@ -127,7 +109,6 @@ public class QuantityLength {
 		double sumBase = base1 + base2;
 		
 		double resultThisUnit = convertFromBaseToTargetUnit(sumBase, targetUnit);
-		
 		return new QuantityLength(resultThisUnit,targetUnit);
 	}
 	
