@@ -46,6 +46,26 @@ public class QuantityMeasurementApp {
 	}
 	
     public static void main(String[] args) {
+    	 System.out.println(new QuantityLength<>(1.0, LengthUnit.FEET).add(new QuantityLength<>(12.0, LengthUnit.INCHES)));
+         System.out.println(new QuantityLength<>(10.0, WeightUnit.KILOGRAM).add(new QuantityLength<>(5000.0, WeightUnit.GRAM), WeightUnit.GRAM));
+
+         System.out.println(new QuantityLength<>(10.0, LengthUnit.FEET).subtract(new QuantityLength<>(6.0, LengthUnit.INCHES)));
+         System.out.println(new QuantityLength<>(5.0, VolumeUnit.LITRE).subtract(new QuantityLength<>(2.0, VolumeUnit.LITRE), VolumeUnit.MILLILITRE));
+
+         System.out.println(new QuantityLength<>(10.0, LengthUnit.FEET).divide(new QuantityLength<>(2.0, LengthUnit.FEET)));
+         System.out.println(new QuantityLength<>(24.0, LengthUnit.INCHES).divide(new QuantityLength<>(2.0, LengthUnit.FEET)));
+
+         try {
+             new QuantityLength<>(10.0, LengthUnit.FEET).add(null);
+         } catch (Exception e) {
+             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+         }
+
+         try {
+             new QuantityLength<>(10.0, LengthUnit.FEET).divide(new QuantityLength<>(0.0, LengthUnit.FEET));
+         } catch (Exception e) {
+             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+         }
     	demonstrateSubtraction(new QuantityLength<>(10.0, LengthUnit.FEET), new QuantityLength<>(6.0, LengthUnit.INCHES));
 		demonstrateSubtraction(new QuantityLength<>(10.0, WeightUnit.KILOGRAM), new QuantityLength<>(5000.0, WeightUnit.GRAM));
 		demonstrateSubtraction(new QuantityLength<>(5.0, VolumeUnit.LITRE), new QuantityLength<>(500.0, VolumeUnit.MILLILITRE));
