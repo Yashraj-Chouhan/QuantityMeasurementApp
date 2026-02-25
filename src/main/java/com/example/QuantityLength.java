@@ -1,13 +1,12 @@
 package com.example;
 
-public class QuantityLength {
+public class QuantityLength<U extends IMeasurable> {
 	private final double value;
-	private final LengthUnit unit;
-	
+	private final U unit;
 	private static final double EPSILON = 1e-6;
 	
 	// Constructor to initialize length value and unit
-	public QuantityLength(double value, LengthUnit unit) {
+	public QuantityLength(double value, U unit) {
 		if(unit == null) {
 			throw new IllegalArgumentException("Unit cannot be null");
 		}
@@ -18,20 +17,12 @@ public class QuantityLength {
 		this.unit = unit;
 	}
 	
-	//Convert the length value to the base unit(inches)
-	private double convertToBaseUnit(){
-		return unit.convertToBaseUnit(value);
-	}
-	
-	private double convertFromBaseToTargetUnit(double lengthInInches, LengthUnit targetUnit) {
-		if (targetUnit == null) {
-			throw new IllegalArgumentException("Target unit cannot be null");
-		}
-		return targetUnit.convertFromBaseUnit(lengthInInches);
+	public double getValue() {
+		return value;
 	}
 
-	public boolean compare(QuantityLength obj) {
-		return Math.abs(this.convertToBaseUnit() - obj.convertToBaseUnit()) < EPSILON;
+	public U getUnit() {
+		return unit;
 	}
 	
 	@Override
@@ -41,61 +32,45 @@ public class QuantityLength {
 			return true;
 		}
 		
-		//2. obj is null
-		if(obj == null) {
+		if(!(obj instanceof QuantityLength<?> other)) {
 			return false;
 		}
 		
-		//3. Type Check
-		if(getClass()!= obj.getClass()) {
+		if (this.unit.getClass() != other.unit.getClass()) {
 			return false;
 		}
-		
-		//4. Cast safely
-		QuantityLength other = (QuantityLength) obj;
-		
-		//5. compare double values safely
-		return compare(other);
-	}
-	
-	@Override
-	public int hashCode() {
-		double normalized = Math.round(convertToBaseUnit() * 10000.0) / 10000.0;
 
-		return Double.hashCode(normalized);
+		double thisBase = unit.convertToBaseUnit(value);
+		double otherBase = other.unit.convertToBaseUnit(other.value);
+		return Math.abs(thisBase - otherBase) < EPSILON;
 	}
 	
-	@Override 
-	public String toString() {
-		return String.format("%.2f %s",value, unit);
-	}
 	
-	// convert this length to the specified target unit
-	public QuantityLength convertTo(LengthUnit targetUnit) {
-		if(targetUnit == null) {
+	public QuantityLength<U> convertTo(U targetUnit) {
+		if (targetUnit == null) {
 			throw new IllegalArgumentException("Target unit cannot be null");
 		}
-		double baseValue = this.convertToBaseUnit();
-		double convertedValue = convertFromBaseToTargetUnit(baseValue,targetUnit);
-		return new QuantityLength(convertedValue,targetUnit);
+
+		double baseValue = unit.convertToBaseUnit(value);
+		double converted = targetUnit.convertFromBaseUnit(baseValue);
+
+		return new QuantityLength<>(converted, targetUnit);
 	}
-	//UC 6 Core Method
-	public QuantityLength add(QuantityLength thatLength) {
+	public QuantityLength<U> add(QuantityLength<U> thatLength) {
 		if(thatLength == null) {
 			throw new IllegalArgumentException("Second oprend null");
 		}
 		
-		double base1 = this.convertToBaseUnit();
-		double base2 = thatLength.convertToBaseUnit();
+		double base1 = unit.convertToBaseUnit(value);
+		double base2 = thatLength.unit.convertToBaseUnit(thatLength.value);
 		
 		double sumBase = base1 + base2;
 		
-		double resultThisUnit = convertFromBaseToTargetUnit(sumBase, this.unit);
-		return new QuantityLength(resultThisUnit,this.unit);
+		double result = unit.convertFromBaseUnit(sumBase);
+		return new QuantityLength(result,unit);
 	}
 	
-	// UC-7 Method 
-	public QuantityLength add(QuantityLength thatLength, LengthUnit targetUnit) {
+	public QuantityLength<U> add(QuantityLength<U> thatLength, U targetUnit) {
 		if(thatLength == null || targetUnit == null) {
 			throw new IllegalArgumentException();
 		}
@@ -103,68 +78,23 @@ public class QuantityLength {
 	    	throw new IllegalArgumentException("Values must be a finite number");
 	    }
 		
-		double base1 = this.convertToBaseUnit();
-		double base2 = thatLength.convertToBaseUnit();
+		double base1 = unit.convertToBaseUnit(value);
+		double base2 = thatLength.unit.convertToBaseUnit(thatLength.value);
 		
 		double sumBase = base1 + base2;
 		
-		double resultThisUnit = convertFromBaseToTargetUnit(sumBase, targetUnit);
-		return new QuantityLength(resultThisUnit,targetUnit);
+		double result = targetUnit.convertFromBaseUnit(sumBase);
+		return new QuantityLength<>(result,targetUnit);
+	}
+
+	@Override
+	public int hashCode() {
+		Long normalized = Math.round(unit.convertToBaseUnit(value)  / EPSILON);
+		return Long.hashCode(normalized);
 	}
 	
-	// main method for standalone testing
-	public static void main(String []args) {
-		QuantityLength length1 = new QuantityLength(1.0,LengthUnit.FEET);
-		QuantityLength length2 = new QuantityLength(12.0,LengthUnit.INCHES);
-		System.out.println("Are lengths equal? "+ length1.equals(length2));
-		
-		QuantityLength length3 = new QuantityLength(1.0,LengthUnit.YARDS);
-		QuantityLength length4 = new QuantityLength(36.0,LengthUnit.INCHES);
-		System.out.println("Are lengths equal? "+ length3.equals(length4));
-		
-		QuantityLength length5 = new QuantityLength(100.0,LengthUnit.CENTIMETERS);
-		QuantityLength length6 = new QuantityLength(39.3701,LengthUnit.INCHES);
-		System.out.println("Are lengths equal? "+ length5.equals(length6));
-		
-		System.out.println("Convert 3 Feet to Inches: " + length1.convertTo(LengthUnit.INCHES));
-		System.out.println("Convert 2 Yards to Inches: " + length3.convertTo(LengthUnit.INCHES));
-		System.out.println("Convert 30.48 cm to Feet: " + new QuantityLength(30.48, LengthUnit.CENTIMETERS).convertTo(LengthUnit.FEET));
-		System.out.println("Convert 72 Inches to Yards: " + new QuantityLength(72.0, LengthUnit.INCHES).convertTo(LengthUnit.YARDS));
-		System.out.println("Convert 0 Feet to Inches: " + new QuantityLength(0.0, LengthUnit.FEET).convertTo(LengthUnit.INCHES));
-		System.out.println("Convert -1 Foot to Inches: " + new QuantityLength(-1.0, LengthUnit.FEET).convertTo(LengthUnit.INCHES));
-
-		System.out.println("Add 1 Foot + 12 Inches = " + length1.add(length2));
-		System.out.println("Add 12 Inches + 1 Foot = " + length2.add(length1));
-		System.out.println("Add 1 Yard + 3 Feet = " + length3.add(new QuantityLength(3.0, LengthUnit.FEET)));
-		System.out.println("Add 36 Inches + 1 Yard = " + length4.add(length3));
-		System.out.println("Add 2.54 cm + 1 Inch = " + new QuantityLength(2.54, LengthUnit.CENTIMETERS).add(new QuantityLength(1.0, LengthUnit.INCHES))); 
-		System.out.println("Add 5 Feet + 0 Inches = " + new QuantityLength(5.0, LengthUnit.FEET).add(new QuantityLength(0.0, LengthUnit.INCHES)));
-		System.out.println("Add 5 Feet + (-2 Feet) = " + new QuantityLength(5.0, LengthUnit.FEET).add(new QuantityLength(-2.0, LengthUnit.FEET)));
-		System.out.println("Add Large Values: " + new QuantityLength(1e6, LengthUnit.FEET).add(new QuantityLength(1e6, LengthUnit.FEET)));
-		System.out.println("Add Small Values: " + new QuantityLength(0.001, LengthUnit.FEET).add(new QuantityLength(0.002, LengthUnit.FEET)));
-	
-		QuantityLength result = new QuantityLength(1.0, LengthUnit.FEET).add(new QuantityLength(12.0, LengthUnit.INCHES), LengthUnit.FEET);
-	    System.out.println("Add (1.0 feet, 12.0 inches, feet) = " + result);
-
-	    result = new QuantityLength(1.0, LengthUnit.FEET).add(new QuantityLength(12.0, LengthUnit.INCHES), LengthUnit.INCHES);
-	    System.out.println("Add (1.0 feet, 12.0 inches, inches) = " + result);
-
-	    result = new QuantityLength(1.0, LengthUnit.FEET).add(new QuantityLength(12.0, LengthUnit.INCHES), LengthUnit.YARDS);
-	    System.out.println("Add (1.0 feet, 12.0 inches, yards) = " + result);
-
-	    result = new QuantityLength(1.0, LengthUnit.YARDS).add(new QuantityLength(3.0, LengthUnit.FEET), LengthUnit.YARDS);
-	    System.out.println("Add (1.0 yards, 3.0 feet, yards) = " + result);
-
-	    result = new QuantityLength(36.0, LengthUnit.INCHES).add(new QuantityLength(1.0, LengthUnit.YARDS), LengthUnit.FEET);
-	    System.out.println("Add (36.0 inches, 1.0 yards, feet) = " + result);
-
-	    result = new QuantityLength(2.54, LengthUnit.CENTIMETERS).add(new QuantityLength(1.0, LengthUnit.INCHES), LengthUnit.CENTIMETERS);
-	    System.out.println("Add (2.54 cm, 1.0 inch, cm) = " + result);
-
-	    result = new QuantityLength(5.0, LengthUnit.FEET).add(new QuantityLength(0.0, LengthUnit.INCHES), LengthUnit.YARDS);
-	    System.out.println("Add (5.0 feet, 0.0 inches, yards) = " + result);
-
-	    result = new QuantityLength(5.0, LengthUnit.FEET).add(new QuantityLength(-2.0, LengthUnit.FEET), LengthUnit.INCHES);
-	    System.out.println("Add (5.0 feet, -2.0 feet, inches) = " + result);
+	@Override 
+	public String toString() {
+		return String.format("%s %s", Double.toString(value).replace("\\.0+$", ""), unit.getUnitName());
 	}
 }	
