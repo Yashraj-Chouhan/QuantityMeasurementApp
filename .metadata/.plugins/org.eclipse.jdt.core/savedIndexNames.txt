@@ -1,0 +1,13 @@
+INDEX VERSION 1.134+C:\Users\yashr\Desktop\QuantityMeasurementApp\.metadata\.plugins\org.eclipse.jdt.core
+3037821217.index
+259618435.index
+1390227364.index
+1864895917.index
+1054403141.index
+1461228079.index
+3714470753.index
+2207793536.index
+2145490756.index
+3254531038.index
+1474203981.index
+1865797976.index
