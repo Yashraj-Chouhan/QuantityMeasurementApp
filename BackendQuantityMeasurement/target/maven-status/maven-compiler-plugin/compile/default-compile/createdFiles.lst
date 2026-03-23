@@ -1,0 +1,8 @@
+com\placement\backendquantitymeasurement\controller\QuantityMeasurementController.class
+com\placement\backendquantitymeasurement\dto\QuantityMeasurementDTO.class
+com\placement\backendquantitymeasurement\dto\QuantityInputDTO.class
+com\placement\backendquantitymeasurement\dto\QuantityDTO.class
+com\placement\backendquantitymeasurement\service\IQuantityMeasurementService.class
+com\placement\backendquantitymeasurement\repository\QuantityMeasurementRepository.class
+com\placement\backendquantitymeasurement\model\QuantityMeasurementEntity.class
+com\placement\backendquantitymeasurement\service\QuantityMeasurementServiceImpl.class
