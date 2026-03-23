@@ -1,0 +1,14 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Eclipse (IMPORTANT for you)
+.metadata/
+*.snap
+.lock
