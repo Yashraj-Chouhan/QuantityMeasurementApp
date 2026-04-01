@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quantity Measurement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+  <div class="header">Welcome To Quantity Measurement</div>
+  <div class="body">
+
+    <!-- TYPE -->
+    <div>
+      <div class="section-label">Choose Type</div>
+      <div class="type-grid">
+        <div class="type-card active" data-type="length">
+          <span class="icon">📏</span>
+          <span class="label">Length</span>
+        </div>
+        <div class="type-card" data-type="weight">
+          <span class="icon">⚖️</span>
+          <span class="label">Weight</span>
+        </div>
+        <div class="type-card" data-type="temperature">
+          <span class="icon">🌡️</span>
+          <span class="label">Temperature</span>
+        </div>
+        <div class="type-card" data-type="volume">
+          <span class="icon">🧊</span>
+          <span class="label">Volume</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION -->
+    <div>
+      <div class="section-label">Choose Action</div>
+      <div class="action-tabs">
+        <button class="tab active" data-action="comparison">Comparison</button>
+        <button class="tab" data-action="conversion">Conversion</button>
+        <button class="tab" data-action="arithmetic">Arithmetic</button>
+      </div>
+    </div>
+
+    <!-- INPUTS -->
+    <div class="input-row" id="inputRow">
+      <div class="input-group">
+        <div class="field-label">From</div>
+        <input class="value-box" id="fromVal" type="number" value="1" />
+        <select class="unit-select" id="fromUnit"></select>
+      </div>
+      <div class="input-group">
+        <div class="field-label" id="toLabel">To</div>
+        <div class="value-box" id="toVal">1000</div>
+        <select class="unit-select" id="toUnit"></select>
+      </div>
+    </div>
+
+    <!-- Arithmetic operator (hidden unless arithmetic) -->
+    <div id="arithSection" style="display:none;">
+      <div class="section-label">Operation</div>
+      <div class="arith-ops">
+        <button class="op-btn active" data-op="add">＋ Add</button>
+        <button class="op-btn" data-op="sub">－ Subtract</button>
+        <button class="op-btn" data-op="mul">× Multiply</button>
+        <button class="op-btn" data-op="div">÷ Divide</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result-banner" id="resultBanner">1 Kilometer = 1000 Meters</div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
